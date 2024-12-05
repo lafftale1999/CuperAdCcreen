@@ -50,7 +50,7 @@
 class HD44780 {
 public:
   HD44780();
-  void ShowAd(Message message);
+  void ShowAd(Message *message);
   void WriteCommand(unsigned char cmd);
   void WriteData(unsigned char data);
   void WriteText(char *text);

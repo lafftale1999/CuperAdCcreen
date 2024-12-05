@@ -22,11 +22,8 @@ int main()
 
     while(1)
     {
-        adChooser.chooseNextAd(&companies);
-        
+        screen.ShowAd(adChooser.chooseNextAd(&companies));
     }
     
-
-
     return 0;
 }
