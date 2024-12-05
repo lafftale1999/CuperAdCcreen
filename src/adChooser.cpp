@@ -1,24 +1,24 @@
 #include "../include/adChooser.h"
-#include "time.h"
 #include "stdlib.h"
+#include "time.h"
 
 AdChooser::AdChooser()
 {
     this->currentAdIndex = -1;
     this->currentCompanyIndex = -1;
+    srand(time(NULL));
 }
 
-Message* AdChooser::chooseNextAd(Companies *companies)
-{
+Message AdChooser::chooseNextAd(Companies *companies)
+{   
     this->currentCompanyIndex = chooseNextCompany(companies);
     this->currentAdIndex = chooseNextMessage(&companies->getCompany(currentCompanyIndex));
 
-    return &companies->getCompany(currentCompanyIndex).getMessages().getMessage(currentAdIndex);
+    return companies->getCompany(currentCompanyIndex).getMessages().getMessage(currentAdIndex);
 }
 
-char AdChooser::chooseNextCompany(Companies *companies)
+int AdChooser::chooseNextCompany(Companies *companies)
 {
-    srand(time(NULL));
     int rnd;
 
     while(1)
@@ -37,9 +37,8 @@ char AdChooser::chooseNextCompany(Companies *companies)
     }
 }
 
-char AdChooser::chooseNextMessage(Company *company)
+int AdChooser::chooseNextMessage(Company *company)
 {
-    srand(time(NULL));
     int rnd = rand() % company->getMessages().getSize();
 
     return rnd;

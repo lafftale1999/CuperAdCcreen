@@ -12,7 +12,7 @@ void Messages::addMessage(Message message)
     this->messages[this->messagesSize++] = message;
 }
 
-Message Messages::getMessage(int index)
+Message& Messages::getMessage(int index)
 {
     return this->messages[index];
 }

@@ -8,20 +8,21 @@ HD44780::HD44780() {
   Initialize();
 }
 
-void HD44780::ShowAd(Message *message)
+void HD44780::ShowAd(Message message)
 {
-    switch(message->getEffect())
+    switch(message.getEffect())
     {
         case PLAIN:
-            WriteText(message->getText());
+            WriteText(message.getText());
+            _delay_ms(AD_LENGTH);
             break;
 
         case SCROLL:
-            Slide(message->getText, strlen(message->getText));
+            Slide(message.getText(), strlen(message.getText()));
             break;
 
         case BLINK:
-            BlinkText(message->getText());
+            BlinkText(message.getText());
             break;
     }
 }
@@ -40,12 +41,6 @@ void HD44780::WriteText(char *text) {
     if (charCount == 16) { // Move to the second line after 16 characters
       GoTo(0, 1);
     }
-    // else if (charCount ==
-    //            32) { // Reset if more than 32 characters (display size)
-    //   Clear();       // Clear the display
-    //   GoTo(0, 0);    // Return to the first line
-    //   charCount = 0; // Reset character count
-    // }
 
     WriteData(*text++);
     charCount++;
@@ -77,7 +72,7 @@ void HD44780::GoTo(unsigned char x, unsigned char y) {
 
 void HD44780::BlinkText(char *text)
 {
-  uint16_t adLengthMS = 20000;
+  uint16_t adLengthMS = AD_LENGTH;
   const uint8_t blinkLengthMS = 250;
 
   uint16_t loops = adLengthMS / (blinkLengthMS * 2);
@@ -104,7 +99,7 @@ void HD44780::Home(void) {
 
 void HD44780::Slide(char *text, uint8_t textLen){
   const uint8_t slideTime = 200;
-  const uint16_t adTime = 20000;
+  const uint16_t adTime = AD_LENGTH;
   const uint8_t screenSize = 32;
   char currText[screenSize + 1];
   for (size_t i = 0; i <= screenSize; i++)
