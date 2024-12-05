@@ -9,7 +9,7 @@ CFLAGS=-Wall -Wextra  -Wundef -pedantic \
 		-Os  -DF_CPU=16000000UL -mmcu=${MCU} -DBAUD=19200
 LDFLAGS=-mmcu=$(MCU)
 PORT=\\\\.\\COM3
-BIN=avrdemo
+BIN=CuperAdCcreen
 OUT=${BIN}.hex
 SOURCES = main.cpp src/adChooser.cpp src/companies.cpp src/company.cpp src/lcd.cpp src/message.cpp src/messages.cpp src/utils.cpp
 

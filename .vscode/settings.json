@@ -4,6 +4,11 @@
             "cwd": "c:\\Users\\prett\\Desktop\\dev\\CuperAdCcreen",
             "binaryPath": "c:\\Users\\prett\\Desktop\\dev\\CuperAdCcreen\\avrdemo.elf",
             "binaryArgs": []
+        },
+        {
+            "cwd": "c:\\Users\\prett\\Desktop\\dev\\CuperAdCcreen",
+            "binaryPath": "c:\\Users\\prett\\Desktop\\dev\\CuperAdCcreen\\CuperAdCcreen.elf",
+            "binaryArgs": []
         }
     ]
 }
