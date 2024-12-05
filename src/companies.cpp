@@ -1,16 +1,15 @@
 #include "../include/companies.h"
 
-int Companies::totalPaid = 0;
-
 Companies::Companies()
 {
     this->sizeOfCompanies = 0;
+    this->totalPaid = 0;
 }
 
 void Companies::addCompany(Company company)
 {
     this->companies[this->sizeOfCompanies++] = company;
-    totalPaid += company.getPayment();
+    this->totalPaid += company.getPayment();
 }
 
 int Companies::getSize()
@@ -23,18 +22,20 @@ Company* Companies::getCompanies()
     return this->companies;
 }
 
-Company Companies::getCompany(int index)
+Company& Companies::getCompany(int index)
 {
     return this->companies[index];
 }
 
 void Companies::createAdSlots()
 {   
-    int currentFloor = 0;
+    long currentFloor = 0L;
 
-    for(Company &company : this->companies)
-    {
-        company.setSlotEnd(currentFloor + (company.getPayment() * 1000) / totalPaid);
-        currentFloor += company.getSlotEnd() + 1;
+    for (int i = 0; i < this->getSize(); i++)
+    {   
+        long part = currentFloor + (long)this->getCompany(i).getPayment() * 1000L / (long)this->totalPaid;
+        this->getCompany(i).setSlotEnd(part);
+        currentFloor += this->getCompany(i).getSlotEnd() + 1L;
     }
+    
 }

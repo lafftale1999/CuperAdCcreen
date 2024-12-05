@@ -8,12 +8,13 @@ class AdChooser
     private:
         char currentCompanyIndex;
         char currentAdIndex;
+        unsigned long seed;
 
     public:
         AdChooser();
-        Message* chooseNextAd(Companies *companies);
-        char chooseNextCompany(Companies *companies);
-        char chooseNextMessage(Company *company);
+        Message chooseNextAd(Companies *companies);
+        int chooseNextCompany(Companies *companies);
+        int chooseNextMessage(Company *company);
 
         void setCurrentAdIndex(char currentAdIndex);
         void setCurrentCompanyIndex(char currentCompanyIndex);

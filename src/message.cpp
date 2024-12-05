@@ -3,7 +3,7 @@
 
 Message::Message()
 {
-    setText("\0");
+    this->text[0] = '\0';
 }
 
 Message::Message(char text[], char effect[])
@@ -14,6 +14,7 @@ Message::Message(char text[], char effect[])
 
 void Message::setText(char text[MAX_STRING_LENGTH])
 {
+    this->text[0] = '\0';
     strcpy(this->text, text);
 }
 

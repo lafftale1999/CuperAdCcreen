@@ -15,6 +15,7 @@ Company::Company(char name[MAX_STRING_LENGTH], int payment, char messages[])
 
 void Company::setName(char name[MAX_STRING_LENGTH])
 {
+    this->name[0] = '\0';
     strcpy(this->name, name);
 }
 
@@ -47,6 +48,17 @@ void Company::createMessages(char messages[])
             }
         }
 
+        switch(attributes)
+        {
+            case 0:
+                message[index] = '\0';
+                break;
+
+            case 1:
+                effect[index] = '\0';
+                break;
+        }
+
         attributes++;
         index = 0;
 
@@ -58,7 +70,7 @@ void Company::createMessages(char messages[])
     }
 }
 
-void Company::setSlotEnd(int slotEnd)
+void Company::setSlotEnd(long slotEnd)
 {
     this->slotEnd = slotEnd;
 }
@@ -78,7 +90,7 @@ Messages Company::getMessages()
     return this->messages;
 }
 
-int Company::getSlotEnd()
+long Company::getSlotEnd()
 {
     return this->slotEnd;
 }

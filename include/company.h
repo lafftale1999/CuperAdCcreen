@@ -10,7 +10,7 @@ class Company
         char name[MAX_STRING_LENGTH];
         int payment;
         Messages messages;
-        int slotEnd;
+        long slotEnd;
 
     public:
         Company();
@@ -19,12 +19,12 @@ class Company
         void setName(char name[MAX_STRING_LENGTH]);
         void setPayment(int payment);
         void createMessages(char messages[]);
-        void setSlotEnd(int slotEnd);
+        void setSlotEnd(long slotEnd);
 
         char* getName();
         int getPayment();
         Messages getMessages();
-        int getSlotEnd();
+        long getSlotEnd();
 };
 
 #endif

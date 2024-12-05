@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "include/adChooser.h"
 #include "include/lcd.h"
+#include "string.h"
+#include "include/utils.h"
 
 int main()
 {   
@@ -17,12 +19,17 @@ int main()
     companies.addCompany(Company("Goofy's Detective Agency", 4000, "Mysteries? Call Goofy,plain,Goofy kirr the biff,plain,"));
     companies.addCompany(Company("CuperAds", 1000, "Looking to be seen? Call us!,scroll,"));
     
+    companies.createAdSlots();
+
     // creating adchooser
     AdChooser adChooser;
 
+    setup_seed();
+
     while(1)
-    {
+    {   
         screen.ShowAd(adChooser.chooseNextAd(&companies));
+        screen.Clear();
     }
     
     return 0;

@@ -13,10 +13,8 @@ class Messages
     public:
         Messages();
         void addMessage(Message message);
-        Message getMessage(int index);
+        Message& getMessage(int index);
         Message* getMessages();
-
-        void init();
         int getSize();
 };
 

@@ -37,6 +37,8 @@
 #define HD44780_HOME 0x02
 // ... [rest of the command set]
 
+#define AD_LENGTH 5000
+
 #define customA                                                                \
   { 0x4, 0x0, 0xe, 0x1, 0xf, 0x11, 0xf, 0x0 }
 #define hourglass                                                              \
@@ -50,7 +52,7 @@
 class HD44780 {
 public:
   HD44780();
-  void ShowAd(Message *message);
+  void ShowAd(Message message);
   void WriteCommand(unsigned char cmd);
   void WriteData(unsigned char data);
   void WriteText(char *text);
