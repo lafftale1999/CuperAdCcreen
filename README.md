@@ -11,3 +11,8 @@ This is my own version of our project for our group assignment in "C/C++ program
 - **Programming Languages** C, C++ and Makefile
 - **Compiler** AVR/G++
 - **Libraries** only using libraries in C/C++ ISO and AVR/G++ from [here](https://blog.zakkemble.net/avr-gcc-builds/)
+
+## I don't have an Arduino
+If you don't own an Arduino, you can upload the bin-file originally named CuperAdCcreen.hex [here](https://wokwi.com/projects/383283130065573889). Click the link and press "F1", search for "Upload Firmware and Start Simulation.." and choose the previously mentioned file.
+
+Thanks :)
