@@ -25,7 +25,7 @@ int main()
     AdChooser adChooser;
 
     setup_seed();
-    
+
     while(1)
     {   
         screen.ShowAd(adChooser.chooseNextAd(&companies));
