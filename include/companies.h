@@ -8,13 +8,14 @@ class Companies
     private:
         Company companies[COMPANIES_IN_LIST];
         int sizeOfCompanies;
-        int totalPaid;
+        long totalPaid;
 
     public:
         Companies();
         void addCompany(Company company);
         int getSize();
         Company* getCompanies();
+        long getTotalPaid();
         void createAdSlots();
 
         Company& getCompany(int index);

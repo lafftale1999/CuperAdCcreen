@@ -27,6 +27,11 @@ Company& Companies::getCompany(int index)
     return this->companies[index];
 }
 
+long Companies::getTotalPaid()
+{
+    return this->totalPaid;
+}
+
 void Companies::createAdSlots()
 {   
     long currentFloor = 0L;
@@ -35,7 +40,7 @@ void Companies::createAdSlots()
     {   
         long part = currentFloor + (long)this->getCompany(i).getPayment() * 1000L / (long)this->totalPaid;
         this->getCompany(i).setSlotEnd(part);
-        currentFloor += this->getCompany(i).getSlotEnd() + 1L;
+        currentFloor = this->getCompany(i).getSlotEnd() + 1L;
     }
     
 }

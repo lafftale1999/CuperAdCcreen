@@ -8,7 +8,6 @@ class AdChooser
     private:
         char currentCompanyIndex;
         char currentAdIndex;
-        unsigned long seed;
 
     public:
         AdChooser();
