@@ -17,7 +17,7 @@ void HD44780::ShowAd(Message *message)
             break;
 
         case SCROLL:
-            Slide(message->getText, strlen(message->getText));
+            Slide(message->getText(), strlen(message->getText()));
             break;
 
         case BLINK:
