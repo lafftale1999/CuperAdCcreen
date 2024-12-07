@@ -3,22 +3,11 @@
 
 #include "company.h"
 
-class Companies
+typedef struct
 {
-    private:
-        Company companies[COMPANIES_IN_LIST];
-        int sizeOfCompanies;
-        long totalPaid;
-
-    public:
-        Companies();
-        void addCompany(Company company);
-        int getSize();
-        Company* getCompanies();
-        long getTotalPaid();
-        void createAdSlots();
-
-        Company& getCompany(int index);
-};
+    CompanyPROGMEM companies[COMPANIES_IN_LIST];
+    int size;
+    long totalPaid;
+}CompaniesPROGMEM;
 
 #endif

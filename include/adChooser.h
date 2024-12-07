@@ -6,20 +6,17 @@
 class AdChooser
 {
     private:
-        char currentCompanyIndex;
-        char currentAdIndex;
+        int currentCompanyIndex;
 
     public:
         AdChooser();
-        Message chooseNextAd(Companies *companies);
-        int chooseNextCompany(Companies *companies);
-        int chooseNextMessage(Company *company);
+        Message chooseNextAd(CompaniesPROGMEM *companies);
+        int chooseNextCompany(CompaniesPROGMEM *companies);
+        Message chooseNextMessage(Company *company);
 
-        void setCurrentAdIndex(char currentAdIndex);
         void setCurrentCompanyIndex(char currentCompanyIndex);
 
         char getCurrentCompanyIndex();
-        char getCurrentAdIndex();
 
 };
 

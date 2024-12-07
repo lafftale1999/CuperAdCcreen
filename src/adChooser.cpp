@@ -1,23 +1,25 @@
 #include "../include/adChooser.h"
-#include "stdlib.h"
-#include "time.h"
+#include <stdlib.h>
+#include <avr/pgmspace.h>
 
 AdChooser::AdChooser()
 {
-    this->currentAdIndex = -1;
     this->currentCompanyIndex = -1;
-    srand(time(NULL));
 }
 
-Message AdChooser::chooseNextAd(Companies *companies)
+Message AdChooser::chooseNextAd(CompaniesPROGMEM *companies)
 {   
     this->currentCompanyIndex = chooseNextCompany(companies);
-    this->currentAdIndex = chooseNextMessage(&companies->getCompany(currentCompanyIndex));
 
-    return companies->getCompany(currentCompanyIndex).getMessages().getMessage(currentAdIndex);
+    CompanyPROGMEM companyFromPROGMEM;
+    memcpy_P(&companyFromPROGMEM, &companies[this->currentCompanyIndex], sizeof(CompanyPROGMEM));
+
+    Company currentCompany = Company(companyFromPROGMEM);
+
+    return this->chooseNextMessage(&currentCompany);
 }
 
-int AdChooser::chooseNextCompany(Companies *companies)
+int AdChooser::chooseNextCompany(CompaniesPROGMEM *companies)
 {
     int rnd;
 
@@ -25,9 +27,9 @@ int AdChooser::chooseNextCompany(Companies *companies)
     {
         rnd = rand() % 1001;
 
-        for(int i = 0; i < companies->getSize(); i++)
+        for(int i = 0; i < companies->size; i++)
         {   
-            if(rnd < companies->getCompanies()[i].getSlotEnd())
+            if(rnd < companies->companies[i].slotEnd)
             {
                 if(this->currentCompanyIndex == i) break;
 
@@ -37,17 +39,13 @@ int AdChooser::chooseNextCompany(Companies *companies)
     }
 }
 
-int AdChooser::chooseNextMessage(Company *company)
+Message AdChooser::chooseNextMessage(Company *company)
 {
     int rnd = rand() % company->getMessages().getSize();
 
-    return rnd;
+    return company->getMessages().getMessage(rnd);
 }
 
-void AdChooser::setCurrentAdIndex(char currentAdIndex)
-{
-    this->currentAdIndex = currentAdIndex;
-}
 void AdChooser::setCurrentCompanyIndex(char currentCompanyIndex)
 {
     this->currentCompanyIndex = currentCompanyIndex;
@@ -56,9 +54,4 @@ void AdChooser::setCurrentCompanyIndex(char currentCompanyIndex)
 char AdChooser::getCurrentCompanyIndex()
 {
     return this->currentCompanyIndex;
-}
-
-char AdChooser::getCurrentAdIndex()
-{
-    return this->currentAdIndex;
 }

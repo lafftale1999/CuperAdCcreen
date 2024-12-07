@@ -13,6 +13,13 @@ Company::Company(char name[MAX_STRING_LENGTH], int payment, char messages[])
     createMessages(messages);
 }
 
+Company::Company(CompanyPROGMEM company)
+{
+    setName(company.name);
+    setPayment(company.payment);
+    createMessages(company.messages);
+}
+
 void Company::setName(char name[MAX_STRING_LENGTH])
 {
     this->name[0] = '\0';
@@ -70,11 +77,6 @@ void Company::createMessages(char messages[])
     }
 }
 
-void Company::setSlotEnd(long slotEnd)
-{
-    this->slotEnd = slotEnd;
-}
-
 char* Company::getName()
 {
     return this->name;
@@ -88,9 +90,4 @@ int Company::getPayment()
 Messages Company::getMessages()
 {
     return this->messages;
-}
-
-long Company::getSlotEnd()
-{
-    return this->slotEnd;
 }

@@ -4,27 +4,33 @@
 #include "config.h"
 #include "messages.h"
 
+typedef struct
+{
+    char name [MAX_STRING_LENGTH];
+    int payment;
+    int slotEnd;
+    char messages[MAX_STRING_LENGTH * MAX_MESSAGES];
+}CompanyPROGMEM;
+
 class Company
 {
     private:
         char name[MAX_STRING_LENGTH];
         int payment;
         Messages messages;
-        long slotEnd;
 
     public:
         Company();
         Company(char name[MAX_STRING_LENGTH], int payment, char messages[]);
+        Company(CompanyPROGMEM company);
 
         void setName(char name[MAX_STRING_LENGTH]);
         void setPayment(int payment);
         void createMessages(char messages[]);
-        void setSlotEnd(long slotEnd);
 
         char* getName();
         int getPayment();
         Messages getMessages();
-        long getSlotEnd();
 };
 
 #endif
