@@ -10,6 +10,8 @@ HD44780::HD44780() {
 
 void HD44780::ShowAd(Message message)
 {
+    this->Clear();
+    
     switch(message.getEffect())
     {
         case PLAIN:
