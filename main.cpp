@@ -2,9 +2,8 @@
 #include "include/lcd.h"
 #include "include/utils.h"
 
-#include <string.h>
-#include <stdio.h>
 #include <avr/pgmspace.h>
+#include <stdio.h>
 
 int main()
 {   
@@ -16,6 +15,9 @@ int main()
     // loading companies into PROGMEM
     const CompaniesPROGMEM companies PROGMEM = init_companies();
 
+    // loading characters into PROGMEM
+    const CharactersFromPROGMEM characters PROGMEM = init_characters();
+
     // creating adchooser
     AdChooser adChooser;
 
@@ -26,6 +28,7 @@ int main()
     while(1)
     {   
         screen.ShowAd(adChooser.chooseNextAd(&companies));
+        screen.WriteChar(adChooser.chooseNextChar(&characters));
     }
     
     return 0;

@@ -1,4 +1,5 @@
-bin/debug/src/lcd.o: src/lcd.cpp src/../include/lcd.h \
+bin/debug/src/characters.o: src/characters.cpp \
+ src/../include/characters.h src/../include/config.h \
  C:/avr/avr/include/avr/io.h C:/avr/avr/include/avr/sfr_defs.h \
  C:/avr/avr/include/inttypes.h C:/avr/lib/gcc/avr/14.1.0/include/stdint.h \
  C:/avr/avr/include/stdint.h C:/avr/avr/include/avr/iom328p.h \
@@ -6,6 +7,4 @@ bin/debug/src/lcd.o: src/lcd.cpp src/../include/lcd.h \
  C:/avr/avr/include/avr/version.h C:/avr/avr/include/avr/fuse.h \
  C:/avr/avr/include/avr/lock.h C:/avr/avr/include/avr/pgmspace.h \
  C:/avr/lib/gcc/avr/14.1.0/include/stddef.h \
- C:/avr/avr/include/util/delay.h C:/avr/avr/include/util/delay_basic.h \
- src/../include/message.h src/../include/config.h \
- src/../include/characters.h C:/avr/avr/include/string.h
+ C:/avr/avr/include/util/delay.h C:/avr/avr/include/util/delay_basic.h

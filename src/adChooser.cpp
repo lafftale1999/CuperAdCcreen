@@ -8,6 +8,11 @@ AdChooser::AdChooser()
     this->currentCompanyIndex = -1;
 }
 
+Character AdChooser::chooseNextChar(const CharactersFromPROGMEM *characters)
+{
+    return Character(characters->characters[rand() % characters->charactersInList]);
+}
+
 Message AdChooser::chooseNextAd(const CompaniesPROGMEM *companies)
 {   
     this->currentCompanyIndex = chooseNextCompany(companies); // WORKS

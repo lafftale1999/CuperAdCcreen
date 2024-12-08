@@ -104,30 +104,38 @@ void HD44780::Slide(const char *text, uint8_t textLen){
   const uint16_t adTime = AD_LENGTH;
   const uint8_t screenSize = 32;
   char currText[screenSize + 1];
+
   for (size_t i = 0; i <= screenSize; i++)
   {
     currText[i] = '\0';
   }
+
   for (size_t i = 0; i < textLen; i++)
   {
     char reverseIndex = i;
+
     for (size_t j = 0; j < i+1; j++)
     {
       currText[j] = text[textLen - 1 - reverseIndex--]; 
     }
+
     Clear();
     WriteText(currText);
     _delay_ms(slideTime);
   }
+
   _delay_ms(adTime);
+
   for (size_t e = 0; e <= textLen; e++)
   {
     for (size_t i = 0; i < textLen; i++)
     {
-      if(currText[0] == '\0'){
+      if(currText[0] == '\0')
+      {
         Clear();
         return;
       }
+
       currText[i] = currText[i+1];
       Clear();
       WriteText(currText);
@@ -212,4 +220,19 @@ void HD44780::CreateChar(uint8_t location, uint8_t charArray[]) {
   for (uint8_t i = 0; i < 8; i++) {
     WriteData(charArray[i]);
   }
+}
+
+void HD44780::WriteChar(Character character)
+{
+  this->CreateChar(0, character.getBitMap());
+  
+  this->Clear();
+  for(int i = 0; i < 33; i++)
+  {
+    this->WriteData(0);
+
+    if (i == 16) this->GoTo(0,1);
+  }
+  
+  _delay_ms(3000);
 }

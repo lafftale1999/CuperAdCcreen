@@ -6,6 +6,7 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include "message.h"
+#include "characters.h"
 
 // Pin configuration
 #define LCD_RS_DIR DDRD
@@ -63,6 +64,7 @@ public:
   void Initialize(void);
   void CreateChar(uint8_t location, uint8_t charArray[]);
   void BlinkText(const char *text);
+  void WriteChar(Character character);
 
 private:
   int position_x;
