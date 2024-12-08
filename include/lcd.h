@@ -5,7 +5,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <util/delay.h>
-#include "message.h"
+#include "company.h"
 
 // Pin configuration
 #define LCD_RS_DIR DDRD
@@ -52,17 +52,18 @@
 class HD44780 {
 public:
   HD44780();
-  void ShowAd(Message message);
+  void ShowAd(Company *company, int messageIndex);
   void WriteCommand(unsigned char cmd);
   void WriteData(unsigned char data);
-  void WriteText(char *text);
+  void WriteText(const char *text);
   void GoTo(unsigned char x, unsigned char y);
   void Clear(void);
   void Home(void);
-  void Slide(char *text, uint8_t textLen);
+  void Slide(const char *text, uint8_t textLen);
   void Initialize(void);
   void CreateChar(uint8_t location, uint8_t charArray[]);
-  void BlinkText(char *text);
+  void BlinkText(const char *text);
+  void WriteCompany(Company *company);
 
 private:
   int position_x;

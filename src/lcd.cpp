@@ -1,5 +1,5 @@
 #include "../include/lcd.h"
-#include "string.h"
+#include <string.h>
 
 // Constructor for HD44780 class
 HD44780::HD44780() {
@@ -8,23 +8,27 @@ HD44780::HD44780() {
   Initialize();
 }
 
-void HD44780::ShowAd(Message message)
+void HD44780::ShowAd(Company *company, int messageIndex)
 {
     this->Clear();
     
-    switch(message.getEffect())
+    this->WriteCompany(company);
+
+    this->Clear();
+
+    switch(company->getMessages().getMessage(messageIndex).getEffect())
     {
         case PLAIN:
-            WriteText(message.getText());
+            WriteText(company->getMessages().getMessage(messageIndex).getText());
             _delay_ms(AD_LENGTH);
             break;
 
         case SCROLL:
-            Slide(message.getText(), strlen(message.getText()));
+            Slide(company->getMessages().getMessage(messageIndex).getText(), strlen(company->getMessages().getMessage(messageIndex).getText()));
             break;
 
         case BLINK:
-            BlinkText(message.getText());
+            BlinkText(company->getMessages().getMessage(messageIndex).getText());
             break;
     }
 }
@@ -36,7 +40,7 @@ void HD44780::WriteCommand(unsigned char cmd) {
   _delay_us(50);
 }
 
-void HD44780::WriteText(char *text) {
+void HD44780::WriteText(const char *text) {
   int charCount = 0; // Track the number of characters printed
   
   while (*text) {
@@ -72,7 +76,7 @@ void HD44780::GoTo(unsigned char x, unsigned char y) {
   WriteCommand(addr);
 }
 
-void HD44780::BlinkText(char *text)
+void HD44780::BlinkText(const char *text)
 {
   uint16_t adLengthMS = AD_LENGTH;
   const uint8_t blinkLengthMS = 250;
@@ -99,40 +103,48 @@ void HD44780::Home(void) {
   _delay_ms(2);
 }
 
-void HD44780::Slide(char *text, uint8_t textLen){
-  const uint8_t slideTime = 200;
+void HD44780::Slide(const char *text, uint8_t textLen){
+  const uint8_t slideTime = 100;
   const uint16_t adTime = AD_LENGTH;
   const uint8_t screenSize = 32;
   char currText[screenSize + 1];
+
   for (size_t i = 0; i <= screenSize; i++)
   {
     currText[i] = '\0';
   }
+
   for (size_t i = 0; i < textLen; i++)
   {
     char reverseIndex = i;
+
     for (size_t j = 0; j < i+1; j++)
     {
       currText[j] = text[textLen - 1 - reverseIndex--]; 
     }
+
     Clear();
     WriteText(currText);
     _delay_ms(slideTime);
   }
+
   _delay_ms(adTime);
+
   for (size_t e = 0; e <= textLen; e++)
   {
     for (size_t i = 0; i < textLen; i++)
     {
-      if(currText[0] == '\0'){
+      if(currText[0] == '\0')
+      {
         Clear();
         return;
       }
+
       currText[i] = currText[i+1];
       Clear();
       WriteText(currText);
     }
-    _delay_ms(200);
+    _delay_ms(slideTime);
   }
 }
 
@@ -212,4 +224,31 @@ void HD44780::CreateChar(uint8_t location, uint8_t charArray[]) {
   for (uint8_t i = 0; i < 8; i++) {
     WriteData(charArray[i]);
   }
+}
+
+void HD44780::WriteCompany(Company* company)
+{
+    // Hämta bitmap och namn
+    uint8_t* bitmap = company->getLogo().getBitMap();
+    const char* name = company->getName();
+
+    this->CreateChar(0, bitmap);
+
+    // Rensa skärmen
+    this->Clear();
+
+    // Skriv ut logotyp (anpassat tecken)
+    this->WriteData(0);
+
+    // Skriv ut företagsnamn
+    uint8_t nameLen = strlen(name);
+    for (uint8_t i = 0; i < nameLen && i < 32; i++) {
+        if (i == 15) GoTo(0, 1); // Flytta till rad 2
+        WriteData(name[i]);
+    }
+
+    this->WriteData(0);
+
+    // Fördröjning
+    _delay_ms(3000);
 }

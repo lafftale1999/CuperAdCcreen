@@ -1,6 +1,5 @@
-bin/debug/main.o: main.cpp include/adChooser.h include/company.h \
- include/config.h include/messages.h include/message.h \
- include/character.h C:/avr/avr/include/avr/io.h \
+bin/debug/src/character.o: src/character.cpp src/../include/character.h \
+ src/../include/config.h C:/avr/avr/include/avr/io.h \
  C:/avr/avr/include/avr/sfr_defs.h C:/avr/avr/include/inttypes.h \
  C:/avr/lib/gcc/avr/14.1.0/include/stdint.h C:/avr/avr/include/stdint.h \
  C:/avr/avr/include/avr/iom328p.h C:/avr/avr/include/avr/portpins.h \
@@ -8,6 +7,4 @@ bin/debug/main.o: main.cpp include/adChooser.h include/company.h \
  C:/avr/avr/include/avr/fuse.h C:/avr/avr/include/avr/lock.h \
  C:/avr/avr/include/avr/pgmspace.h \
  C:/avr/lib/gcc/avr/14.1.0/include/stddef.h \
- C:/avr/avr/include/util/delay.h C:/avr/avr/include/util/delay_basic.h \
- include/lcd.h include/utils.h C:/avr/avr/include/stdio.h \
- C:/avr/lib/gcc/avr/14.1.0/include/stdarg.h
+ C:/avr/avr/include/util/delay.h C:/avr/avr/include/util/delay_basic.h

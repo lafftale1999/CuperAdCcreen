@@ -1,6 +1,6 @@
 #include "../include/messages.h"
 
-#include "string.h"
+#include <string.h>
 
 Messages::Messages()
 {
@@ -9,7 +9,7 @@ Messages::Messages()
 
 void Messages::addMessage(Message message)
 {
-    this->messages[this->messagesSize++] = message;
+    memcpy(&this->messages[this->messagesSize++], &message, sizeof(Message));
 }
 
 Message& Messages::getMessage(int index)
