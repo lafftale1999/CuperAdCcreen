@@ -8,23 +8,27 @@ HD44780::HD44780() {
   Initialize();
 }
 
-void HD44780::ShowAd(Message message)
+void HD44780::ShowAd(Company *company, int messageIndex)
 {
     this->Clear();
     
-    switch(message.getEffect())
+    this->WriteCompany(company);
+
+    this->Clear();
+
+    switch(company->getMessages().getMessage(messageIndex).getEffect())
     {
         case PLAIN:
-            WriteText(message.getText());
+            WriteText(company->getMessages().getMessage(messageIndex).getText());
             _delay_ms(AD_LENGTH);
             break;
 
         case SCROLL:
-            Slide(message.getText(), strlen(message.getText()));
+            Slide(company->getMessages().getMessage(messageIndex).getText(), strlen(company->getMessages().getMessage(messageIndex).getText()));
             break;
 
         case BLINK:
-            BlinkText(message.getText());
+            BlinkText(company->getMessages().getMessage(messageIndex).getText());
             break;
     }
 }
@@ -100,7 +104,7 @@ void HD44780::Home(void) {
 }
 
 void HD44780::Slide(const char *text, uint8_t textLen){
-  const uint8_t slideTime = 200;
+  const uint8_t slideTime = 100;
   const uint16_t adTime = AD_LENGTH;
   const uint8_t screenSize = 32;
   char currText[screenSize + 1];
@@ -140,7 +144,7 @@ void HD44780::Slide(const char *text, uint8_t textLen){
       Clear();
       WriteText(currText);
     }
-    _delay_ms(200);
+    _delay_ms(slideTime);
   }
 }
 
@@ -222,17 +226,29 @@ void HD44780::CreateChar(uint8_t location, uint8_t charArray[]) {
   }
 }
 
-void HD44780::WriteChar(Character character)
+void HD44780::WriteCompany(Company* company)
 {
-  this->CreateChar(0, character.getBitMap());
-  
-  this->Clear();
-  for(int i = 0; i < 33; i++)
-  {
+    // Hämta bitmap och namn
+    uint8_t* bitmap = company->getLogo().getBitMap();
+    const char* name = company->getName();
+
+    this->CreateChar(0, bitmap);
+
+    // Rensa skärmen
+    this->Clear();
+
+    // Skriv ut logotyp (anpassat tecken)
     this->WriteData(0);
 
-    if (i == 16) this->GoTo(0,1);
-  }
-  
-  _delay_ms(3000);
+    // Skriv ut företagsnamn
+    uint8_t nameLen = strlen(name);
+    for (uint8_t i = 0; i < nameLen && i < 32; i++) {
+        if (i == 15) GoTo(0, 1); // Flytta till rad 2
+        WriteData(name[i]);
+    }
+
+    this->WriteData(0);
+
+    // Fördröjning
+    _delay_ms(3000);
 }

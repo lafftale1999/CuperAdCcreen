@@ -15,9 +15,6 @@ int main()
     // loading companies into PROGMEM
     const CompaniesPROGMEM companies PROGMEM = init_companies();
 
-    // loading characters into PROGMEM
-    const CharactersFromPROGMEM characters PROGMEM = init_characters();
-
     // creating adchooser
     AdChooser adChooser;
 
@@ -27,8 +24,8 @@ int main()
     // super-loop
     while(1)
     {   
-        screen.ShowAd(adChooser.chooseNextAd(&companies));
-        screen.WriteChar(adChooser.chooseNextChar(&characters));
+        Company currentCompany = adChooser.chooseNextCompany(&companies);
+        screen.ShowAd(&currentCompany, adChooser.chooseNextMessage(&currentCompany));
     }
     
     return 0;

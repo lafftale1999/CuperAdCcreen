@@ -1,7 +1,7 @@
 bin/debug/src/adChooser.o: src/adChooser.cpp src/../include/adChooser.h \
  src/../include/company.h src/../include/config.h \
  src/../include/messages.h src/../include/message.h \
- src/../include/characters.h C:/avr/avr/include/avr/io.h \
+ src/../include/character.h C:/avr/avr/include/avr/io.h \
  C:/avr/avr/include/avr/sfr_defs.h C:/avr/avr/include/inttypes.h \
  C:/avr/lib/gcc/avr/14.1.0/include/stdint.h C:/avr/avr/include/stdint.h \
  C:/avr/avr/include/avr/iom328p.h C:/avr/avr/include/avr/portpins.h \

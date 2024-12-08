@@ -2,7 +2,6 @@
 #define AD_CHOOSER_H
 
 #include "company.h"
-#include "characters.h"
 
 class AdChooser
 {
@@ -12,10 +11,8 @@ class AdChooser
     public:
         AdChooser();
 
-        Character chooseNextChar(const CharactersFromPROGMEM *characters);
-        Message chooseNextAd(const CompaniesPROGMEM *companies);
-        int chooseNextCompany(const CompaniesPROGMEM *companies);
-        Message chooseNextMessage(Company *company);
+        Company chooseNextCompany(const CompaniesPROGMEM *companies);
+        int chooseNextMessage(Company *company);
 
         void setCurrentCompanyIndex(char currentCompanyIndex);
 

@@ -8,21 +8,7 @@ AdChooser::AdChooser()
     this->currentCompanyIndex = -1;
 }
 
-Character AdChooser::chooseNextChar(const CharactersFromPROGMEM *characters)
-{
-    return Character(characters->characters[rand() % characters->charactersInList]);
-}
-
-Message AdChooser::chooseNextAd(const CompaniesPROGMEM *companies)
-{   
-    this->currentCompanyIndex = chooseNextCompany(companies); // WORKS
-
-    Company currentCompany = Company(companies->companies[this->currentCompanyIndex]);
-
-    return this->chooseNextMessage(&currentCompany);
-}
-
-int AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
+Company AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
 {
     int rnd;
 
@@ -36,17 +22,19 @@ int AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
             {
                 if(this->currentCompanyIndex == i) break;
 
-                return i;
+                this->currentCompanyIndex = i;
+
+                return Company(companies->companies[i]);
             }
         }
     }
 }
 
-Message AdChooser::chooseNextMessage(Company *company)
+int AdChooser::chooseNextMessage(Company *company)
 {
     int rnd = rand() % company->getMessages().getSize();
 
-    return company->getMessages().getMessage(rnd);
+    return rnd;
 }
 
 void AdChooser::setCurrentCompanyIndex(char currentCompanyIndex)

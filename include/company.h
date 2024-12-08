@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "messages.h"
+#include "character.h"
 
 typedef struct
 {
@@ -10,6 +11,7 @@ typedef struct
     int payment;
     int slotEnd;
     char messages[MAX_STRING_LENGTH * MAX_MESSAGES];
+    uint8_t bitMap[MAX_BIT_BITMAP];
 }CompanyPROGMEM;
 
 typedef struct
@@ -27,6 +29,7 @@ class Company
         char name[MAX_STRING_LENGTH];
         int payment;
         Messages messages;
+        Character logo;
 
     public:
         Company();
@@ -40,6 +43,7 @@ class Company
         char* getName();
         int getPayment();
         Messages getMessages();
+        Character getLogo();
 };
 
 #endif

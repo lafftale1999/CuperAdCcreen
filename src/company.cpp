@@ -4,14 +4,58 @@
 
 CompaniesPROGMEM init_companies()
 {
-    CompaniesPROGMEM companies PROGMEM = 
+    CompaniesPROGMEM companies = 
     {
         {
-            {"Hederlige Harrys Bilar", 5000, 344, "Buy your car from Harrys,scroll,A good deal (for Harry),plain,Hederlige Harrys Bilar,blink,"},
-            {"Farmor Ankas Pajer AB", 3000, 551, "Buy pie from Gramma Duck,scroll,Hurry before Marten eats it,plain,"},
-            {"Svarte Petters Svartbyggen", 1500, 655, "Let Petter build for you,scroll,No tax? Call Petter!,plain,"},
-            {"Goofy's Detective Agency", 4000, 931, "Mysteries? Call Goofy,plain,Goofy kirr the biff,plain,"},
-            {"CuperAds", 1000, 1000, "Looking to be seen? Call us!,scroll,"},
+            {"HEDERLIGE HARRYS BILAR AB", 
+            5000, 
+            344, 
+            "BUY YOUR CAR FROM HARRYS,scroll,A GOOD DEAL (FOR HARRY),plain,GIVE ME YOUR MONAY,blink,",
+            {
+                0b01010, 0b11111, 0b10000, 0b11111,
+                0b00001, 0b11111, 0b01010, 0b00000
+            }
+            },
+
+            {"GRAMMY DUCK'S PIES AB",
+            3000,
+            551,
+            "BUY PIE FROM GRAMMY DUCK,scroll,MAKING PEOPLE FLOAT SINCE 1964,plain,",
+            {
+                0b00100, 0b10010, 0b01001, 0b10010,
+                0b00000, 0b11111, 0b10001, 0b01110
+            }
+            },
+
+            {"PETTER'S HANDYMAN AB",
+            1500,
+            655,
+            "LET BETTER DO THE BUILDING,scroll,NOW TAXFREE! CALL PETTER TODAY,plain,",
+            {
+                0b00000, 0b00001, 0b01111, 0b10101,
+                0b00100, 0b00100, 0b00100, 0b00100
+            }
+            },
+
+            {"GOOFY DETECTIVE AGENCY AB",
+            4000,
+            931,
+            "MYSTERIES? CALL GOOFY!,plain,GOOFY KIRR THE BIFF,plain,",
+            {
+                0b01110, 0b10001, 0b10001, 0b10001,
+                0b01110, 0b00100, 0b00010, 0b00001
+            }
+            },
+
+            {"CUPERADS",
+            1000,
+            1000,
+            "LOOKING TO BE SEEN? CALL US!,scroll,",
+            {
+                0b11101, 0b10000, 0b11101, 0b00000,
+                0b10111, 0b00101, 0b10111, 0b00101
+            }
+            }
         },
         COMPANIES_IN_LIST,
         14500
@@ -37,6 +81,7 @@ Company::Company(CompanyPROGMEM company)
     setName(company.name);
     setPayment(company.payment);
     createMessages(company.messages);
+    this->logo = Character(company.bitMap);
 }
 
 void Company::setName(char name[MAX_STRING_LENGTH])
@@ -109,4 +154,9 @@ int Company::getPayment()
 Messages Company::getMessages()
 {
     return this->messages;
+}
+
+Character Company::getLogo()
+{
+    return this->logo;
 }
