@@ -1,5 +1,6 @@
 #include "../include/adChooser.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <avr/pgmspace.h>
 
 AdChooser::AdChooser()
@@ -7,19 +8,16 @@ AdChooser::AdChooser()
     this->currentCompanyIndex = -1;
 }
 
-Message AdChooser::chooseNextAd(CompaniesPROGMEM *companies)
+Message AdChooser::chooseNextAd(const CompaniesPROGMEM *companies)
 {   
-    this->currentCompanyIndex = chooseNextCompany(companies);
+    this->currentCompanyIndex = chooseNextCompany(companies); // WORKS
 
-    CompanyPROGMEM companyFromPROGMEM;
-    memcpy_P(&companyFromPROGMEM, &companies[this->currentCompanyIndex], sizeof(CompanyPROGMEM));
-
-    Company currentCompany = Company(companyFromPROGMEM);
+    Company currentCompany = Company(companies->companies[this->currentCompanyIndex]);
 
     return this->chooseNextMessage(&currentCompany);
 }
 
-int AdChooser::chooseNextCompany(CompaniesPROGMEM *companies)
+int AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
 {
     int rnd;
 
@@ -51,7 +49,7 @@ void AdChooser::setCurrentCompanyIndex(char currentCompanyIndex)
     this->currentCompanyIndex = currentCompanyIndex;
 }
 
-char AdChooser::getCurrentCompanyIndex()
+int AdChooser::getCurrentCompanyIndex()
 {
     return this->currentCompanyIndex;
 }

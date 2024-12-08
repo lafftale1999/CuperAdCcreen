@@ -6,19 +6,19 @@ Message::Message()
     this->text[0] = '\0';
 }
 
-Message::Message(char text[], char effect[])
+Message::Message(const char text[], char effect[])
 {
     setText(text);
     setEffect(effect);
 }
 
-void Message::setText(char text[MAX_STRING_LENGTH])
+void Message::setText(const char text[MAX_STRING_LENGTH])
 {
     this->text[0] = '\0';
     strcpy(this->text, text);
 }
 
-void Message::setEffect(char effect[])
+void Message::setEffect(const char effect[])
 {   
     if(!strcmp(effect, "scroll"))
     {
@@ -36,7 +36,7 @@ void Message::setEffect(char effect[])
     }
 }
 
-char* Message::getText()
+const char* Message::getText()
 {
     return this->text;
 }

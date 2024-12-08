@@ -1,5 +1,5 @@
-#ifndef COMPANY_H
-#define COMPANY_H
+#ifndef __COMPANY_H
+#define __COMPANY_H
 
 #include "config.h"
 #include "messages.h"
@@ -11,6 +11,13 @@ typedef struct
     int slotEnd;
     char messages[MAX_STRING_LENGTH * MAX_MESSAGES];
 }CompanyPROGMEM;
+
+typedef struct
+{
+    CompanyPROGMEM companies[COMPANIES_IN_LIST];
+    int size;
+    long totalPaid;
+}CompaniesPROGMEM;
 
 class Company
 {

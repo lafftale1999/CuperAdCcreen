@@ -1,7 +1,7 @@
 #ifndef AD_CHOOSER_H
 #define AD_CHOOSER_H
 
-#include "companies.h"
+#include "company.h"
 
 class AdChooser
 {
@@ -10,13 +10,13 @@ class AdChooser
 
     public:
         AdChooser();
-        Message chooseNextAd(CompaniesPROGMEM *companies);
-        int chooseNextCompany(CompaniesPROGMEM *companies);
+        Message chooseNextAd(const CompaniesPROGMEM *companies);
+        int chooseNextCompany(const CompaniesPROGMEM *companies);
         Message chooseNextMessage(Company *company);
 
         void setCurrentCompanyIndex(char currentCompanyIndex);
 
-        char getCurrentCompanyIndex();
+        int getCurrentCompanyIndex();
 
 };
 

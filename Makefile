@@ -11,7 +11,7 @@ LDFLAGS=-mmcu=$(MCU)
 PORT=\\\\.\\COM3
 BIN=CuperAdCcreen
 OUT=${BIN}.hex
-SOURCES = main.cpp src/adChooser.cpp src/companies.cpp src/company.cpp src/lcd.cpp src/message.cpp src/messages.cpp src/utils.cpp
+SOURCES = main.cpp src/adChooser.cpp src/company.cpp src/lcd.cpp src/message.cpp src/messages.cpp src/utils.cpp
 
 DEBUG?=1
 

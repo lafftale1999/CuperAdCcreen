@@ -2,6 +2,8 @@
 #include "include/lcd.h"
 #include "include/utils.h"
 
+#include <string.h>
+#include <stdio.h>
 #include <avr/pgmspace.h>
 
 int main()

@@ -55,14 +55,14 @@ public:
   void ShowAd(Message message);
   void WriteCommand(unsigned char cmd);
   void WriteData(unsigned char data);
-  void WriteText(char *text);
+  void WriteText(const char *text);
   void GoTo(unsigned char x, unsigned char y);
   void Clear(void);
   void Home(void);
-  void Slide(char *text, uint8_t textLen);
+  void Slide(const char *text, uint8_t textLen);
   void Initialize(void);
   void CreateChar(uint8_t location, uint8_t charArray[]);
-  void BlinkText(char *text);
+  void BlinkText(const char *text);
 
 private:
   int position_x;

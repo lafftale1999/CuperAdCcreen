@@ -1,5 +1,5 @@
 #include "../include/lcd.h"
-#include "string.h"
+#include <string.h>
 
 // Constructor for HD44780 class
 HD44780::HD44780() {
@@ -36,7 +36,7 @@ void HD44780::WriteCommand(unsigned char cmd) {
   _delay_us(50);
 }
 
-void HD44780::WriteText(char *text) {
+void HD44780::WriteText(const char *text) {
   int charCount = 0; // Track the number of characters printed
   
   while (*text) {
@@ -72,7 +72,7 @@ void HD44780::GoTo(unsigned char x, unsigned char y) {
   WriteCommand(addr);
 }
 
-void HD44780::BlinkText(char *text)
+void HD44780::BlinkText(const char *text)
 {
   uint16_t adLengthMS = AD_LENGTH;
   const uint8_t blinkLengthMS = 250;
@@ -99,7 +99,7 @@ void HD44780::Home(void) {
   _delay_ms(2);
 }
 
-void HD44780::Slide(char *text, uint8_t textLen){
+void HD44780::Slide(const char *text, uint8_t textLen){
   const uint8_t slideTime = 200;
   const uint16_t adTime = AD_LENGTH;
   const uint8_t screenSize = 32;

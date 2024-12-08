@@ -18,12 +18,12 @@ class Message
 
     public:
         Message();
-        Message(char text[], char effect[]);
+        Message(const char text[], char effect[]);
         
-        void setText(char text[MAX_STRING_LENGTH]);
-        void setEffect(char effect[]);
+        void setText(const char text[MAX_STRING_LENGTH]);
+        void setEffect(const char effect[]);
 
-        char* getText();
+        const char* getText();
         Effect getEffect();
 };
 
