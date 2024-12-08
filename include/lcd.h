@@ -6,6 +6,7 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include "company.h"
+#include "millis.h"
 
 // Pin configuration
 #define LCD_RS_DIR DDRD
@@ -37,7 +38,8 @@
 #define HD44780_HOME 0x02
 // ... [rest of the command set]
 
-#define AD_LENGTH 5000
+#define AD_LENGTH 10000
+#define COMPANY_NAME_TIME 3000
 
 #define customA                                                                \
   { 0x4, 0x0, 0xe, 0x1, 0xf, 0x11, 0xf, 0x0 }

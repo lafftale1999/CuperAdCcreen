@@ -9,5 +9,5 @@ bin/debug/main.o: main.cpp include/adChooser.h include/company.h \
  C:/avr/avr/include/avr/pgmspace.h \
  C:/avr/lib/gcc/avr/14.1.0/include/stddef.h \
  C:/avr/avr/include/util/delay.h C:/avr/avr/include/util/delay_basic.h \
- include/lcd.h include/utils.h C:/avr/avr/include/stdio.h \
- C:/avr/lib/gcc/avr/14.1.0/include/stdarg.h
+ include/lcd.h include/millis.h include/utils.h include/millis.h \
+ C:/avr/avr/include/avr/interrupt.h

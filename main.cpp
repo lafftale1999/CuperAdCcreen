@@ -1,11 +1,18 @@
 #include "include/adChooser.h"
 #include "include/lcd.h"
 #include "include/utils.h"
+#include "include/millis.h"
 
 #include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 
 int main()
 {   
+    // initializing millis library
+    millis_init();
+
+    sei();
+
     // creating and setting screen
     HD44780 screen;
     screen.Initialize();

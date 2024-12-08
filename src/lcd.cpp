@@ -11,16 +11,31 @@ HD44780::HD44780() {
 void HD44780::ShowAd(Company *company, int messageIndex)
 {
     this->Clear();
-    
     this->WriteCompany(company);
-
     this->Clear();
+
+    millis_t start = millis_get();
+
+    // since this condition only applies to one company - i've entered it as an if-statement
+    // we could add an enum attribute to messages to controll when they are shown
+    // and add an enum attribute to the company to controll is they have special 
+    if(!strcmp(company->getName(),"PETTER'S HANDYMAN AB"))
+    {
+      if(start < 1000 || !((start / 60000) % 2))
+      {
+        Slide(company->getMessages().getMessage(0).getText());
+        return;
+      }
+      WriteText(company->getMessages().getMessage(1).getText());
+      while((millis_get() - start) < AD_LENGTH);
+      return;
+    }
 
     switch(company->getMessages().getMessage(messageIndex).getEffect())
     {
         case PLAIN:
             WriteText(company->getMessages().getMessage(messageIndex).getText());
-            _delay_ms(AD_LENGTH);
+            while((millis_get() - start) < AD_LENGTH);
             break;
 
         case SCROLL:
@@ -83,7 +98,9 @@ void HD44780::BlinkText(const char *text)
 
   uint16_t loops = adLengthMS / (blinkLengthMS * 2);
 
-  for(int i = 0; i < loops; i++)
+  millis_t start = millis_get();
+
+  while((millis_get() - start) < AD_LENGTH)
   {
     WriteText(text);
     _delay_ms(blinkLengthMS);
@@ -104,35 +121,52 @@ void HD44780::Home(void) {
 }
 
 void HD44780::Slide(const char *text, uint8_t textLen){
-  const uint8_t slideTime = 100;
-  const uint16_t adTime = AD_LENGTH;
+  const uint8_t slideDelayMS = 100;
+  const uint32_t minimumAdTime = 2000;
   const uint8_t screenSize = 32;
   char currText[screenSize + 1];
 
-  for (size_t i = 0; i <= screenSize; i++)
+  millis_t startOfFunction = millis_get();
+  millis_t start = millis_get();
+
+  for (uint8_t i = 0; i <= screenSize; i++)
   {
     currText[i] = '\0';
   }
 
-  for (size_t i = 0; i < textLen; i++)
+  for (uint8_t i = 0; i < textLen; i++)
   {
     char reverseIndex = i;
 
-    for (size_t j = 0; j < i+1; j++)
+    for (uint8_t j = 0; j < i+1; j++)
     {
       currText[j] = text[textLen - 1 - reverseIndex--]; 
     }
 
     Clear();
     WriteText(currText);
-    _delay_ms(slideTime);
+
+    start = millis_get();
+    while((millis_get() - start) < slideDelayMS);
   }
 
-  _delay_ms(adTime);
-
-  for (size_t e = 0; e <= textLen; e++)
+  start = millis_get();
+  // IF it took less than half the adtime - the minimum ad time (1000ms) to write out the ad
+  if((millis_get() - startOfFunction) <= (AD_LENGTH / 2 - minimumAdTime))
   {
-    for (size_t i = 0; i < textLen; i++)
+    // show the ad for ad lenght - the time it takes to write it out / remove
+    while((millis_get() - start) < (AD_LENGTH - ((start - startOfFunction) * 2)));
+  }
+
+  // let the ad show for at least 1000ms
+  else
+  {
+    while((millis_get() - start) < minimumAdTime);
+  }
+
+  for (uint8_t e = 0; e <= textLen; e++)
+  {
+    for (uint8_t i = 0; i < textLen; i++)
     {
       if(currText[0] == '\0')
       {
@@ -144,7 +178,8 @@ void HD44780::Slide(const char *text, uint8_t textLen){
       Clear();
       WriteText(currText);
     }
-    _delay_ms(slideTime);
+    start = millis_get();
+    while((millis_get() - start) < slideDelayMS);
   }
 }
 
@@ -172,14 +207,6 @@ void HD44780::Initialize(void) {
   WriteCommand(0x06); // Entry mode: Increment cursor
 
   _delay_us(25); //safety delay
-  uint8_t customChar[] = customA;
-  CreateChar(0, customChar);
-  uint8_t customCharTwo[] = hourglass;
-  CreateChar(1, customCharTwo);
-  uint8_t leftHour[] = leftSideHourglass;
-  CreateChar(2, leftHour);
-  uint8_t rightHour[] = rightSideHourglass;
-  CreateChar(3, rightHour);
 }
 
 void HD44780::OutNibble(unsigned char nibble) {
@@ -228,27 +255,23 @@ void HD44780::CreateChar(uint8_t location, uint8_t charArray[]) {
 
 void HD44780::WriteCompany(Company* company)
 {
-    // Hämta bitmap och namn
-    uint8_t* bitmap = company->getLogo().getBitMap();
-    const char* name = company->getName();
+    // create the company logo bitmap
+    this->CreateChar(0, company->getLogo().getBitMap());
 
-    this->CreateChar(0, bitmap);
-
-    // Rensa skärmen
     this->Clear();
 
-    // Skriv ut logotyp (anpassat tecken)
+    // write out the logotype
     this->WriteData(0);
 
-    // Skriv ut företagsnamn
-    uint8_t nameLen = strlen(name);
-    for (uint8_t i = 0; i < nameLen && i < 32; i++) {
-        if (i == 15) GoTo(0, 1); // Flytta till rad 2
-        WriteData(name[i]);
+    // write out the company name
+    for (uint8_t i = 0; i < strlen(company->getName()) && i < 32; i++) {
+        if (i == 15) GoTo(0, 1);
+        WriteData(company->getName()[i]);
     }
 
+    // write out the logotype
     this->WriteData(0);
 
-    // Fördröjning
-    _delay_ms(3000);
+    millis_t start = millis_get();
+    while((millis_get() - start) < COMPANY_NAME_TIME);
 }
