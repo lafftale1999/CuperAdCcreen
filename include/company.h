@@ -19,6 +19,8 @@ typedef struct
     long totalPaid;
 }CompaniesPROGMEM;
 
+CompaniesPROGMEM init_companies();
+
 class Company
 {
     private:
