@@ -9,4 +9,5 @@ bin/debug/src/lcd.o: src/lcd.cpp src/../include/lcd.h \
  C:/avr/avr/include/util/delay.h C:/avr/avr/include/util/delay_basic.h \
  src/../include/company.h src/../include/config.h \
  src/../include/messages.h src/../include/message.h \
- src/../include/character.h C:/avr/avr/include/string.h
+ src/../include/character.h src/../include/millis.h \
+ C:/avr/avr/include/string.h
