@@ -3,7 +3,6 @@
 #include "include/utils.h"
 
 #include <avr/pgmspace.h>
-#include <stdio.h>
 
 int main()
 {   
