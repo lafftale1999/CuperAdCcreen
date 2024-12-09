@@ -16,43 +16,51 @@ void HD44780::ShowAd(Company *company, int messageIndex)
 
     millis_t start = millis_get();
 
-    // since this condition only applies to one company - i've entered it as an if-statement
-    // we could add an enum attribute to messages to controll when they are shown
-    // and add an enum attribute to the company to controll is they have special 
-    if(!strcmp(company->getName(),"PETTER'S HANDYMAN AB"))
+    // one company in this assignment had special demands, therefore we are checking if the advertiser is
+    // regular then they go through the regular switch case
+    if(company->getDemand() == REGULAR)
     {
-      if(start < 1000 || !((start / 60000) % 2))
+      switch(company->getMessages().getMessage(messageIndex).getEffect())
       {
-        Slide(company->getMessages().getMessage(0).getText());
-        return;
-      }
-      WriteText(company->getMessages().getMessage(1).getText());
-      while((millis_get() - start) < AD_LENGTH);
-      return;
-    }
-
-    switch(company->getMessages().getMessage(messageIndex).getEffect())
-    {
         case PLAIN:
-            WriteText(company->getMessages().getMessage(messageIndex).getText());
-            while((millis_get() - start) < AD_LENGTH);
-            break;
+          WriteText(company->getMessages().getMessage(messageIndex).getText());
+          while((millis_get() - start) < AD_LENGTH);
+          break;
 
         case SCROLL:
-            Slide(company->getMessages().getMessage(messageIndex).getText(), strlen(company->getMessages().getMessage(messageIndex).getText()));
-            break;
+          ScrollText(company->getMessages().getMessage(messageIndex).getText(), strlen(company->getMessages().getMessage(messageIndex).getText()));
+          break;
 
         case BLINK:
-            BlinkText(company->getMessages().getMessage(messageIndex).getText());
-            break;
+          BlinkText(company->getMessages().getMessage(messageIndex).getText());
+          break;
+      }
     }
-}
 
-// Sending command to the LCD
-void HD44780::WriteCommand(unsigned char cmd) {
-  OutNibble(cmd >> 4);
-  OutNibble(cmd);
-  _delay_us(50);
+    // otherwhise we check if they are special
+    else if(company->getDemand() == SPECIAL)
+    { 
+      // the special demand was to write out certain messages depending if the minutes was even / uneven
+      uint32_t isEven = (millis_get() / 60000) % 2;
+
+      if(!isEven)
+      {
+        ScrollText(company->getMessages().getMessage(0).getText(), strlen(company->getMessages().getMessage(0).getText()));
+      }
+
+      else
+      {
+        WriteText(company->getMessages().getMessage(1).getText());
+        while((millis_get() - start) < AD_LENGTH);
+      }  
+    }
+
+    // if none of the above has been assigned , something is wrong
+    else
+    {
+      WriteText("SOMETHING WENT WRONG!");
+      while((millis_get() - start) < AD_LENGTH);
+    }
 }
 
 void HD44780::WriteText(const char *text) {
@@ -68,29 +76,6 @@ void HD44780::WriteText(const char *text) {
   }
 }
 
-// Writes Data to the LCD
-void HD44780::WriteData(unsigned char data) {
-  // Sets Register Select-pin to (1) to signal that the HD44780 is receiving data
-  LCD_RS_PORT |= LCD_RS;
-
-  // Writes the data
-  Write(data);
-
-  // Sets RS-pin to (0) for receiving commands
-  LCD_RS_PORT &= ~LCD_RS;
-}
-
-// Sends half-bytes
-void HD44780::Write(unsigned char byte) {
-  OutNibble(byte >> 4); // 
-  OutNibble(byte);
-}
-
-void HD44780::GoTo(unsigned char x, unsigned char y) {
-  unsigned char addr = 0x80 + x + (0x40 * y);
-  WriteCommand(addr);
-}
-
 void HD44780::BlinkText(const char *text)
 {
   uint16_t adLengthMS = AD_LENGTH;
@@ -101,26 +86,19 @@ void HD44780::BlinkText(const char *text)
   millis_t start = millis_get();
 
   while((millis_get() - start) < AD_LENGTH)
-  {
+  { 
+    millis_t delay = millis_get();
+
     WriteText(text);
-    _delay_ms(blinkLengthMS);
+    while((millis_get() - delay) < blinkLengthMS);
 
     Clear();
-    _delay_ms(blinkLengthMS);
+    delay = millis_get();
+    while((millis_get() - delay) < blinkLengthMS);
   }
 }
 
-void HD44780::Clear(void) {
-  WriteCommand(HD44780_CLEAR);
-  _delay_ms(2);
-}
-
-void HD44780::Home(void) {
-  WriteCommand(HD44780_HOME);
-  _delay_ms(2);
-}
-
-void HD44780::Slide(const char *text, uint8_t textLen){
+void HD44780::ScrollText(const char *text, uint8_t textLen){
   const uint8_t slideDelayMS = 100;
   const uint32_t minimumAdTime = 2000;
   const uint8_t screenSize = 32;
@@ -129,11 +107,13 @@ void HD44780::Slide(const char *text, uint8_t textLen){
   millis_t startOfFunction = millis_get();
   millis_t start = millis_get();
 
+  // make sure we dont have any scrap-values in our temporary string
   for (uint8_t i = 0; i <= screenSize; i++)
   {
     currText[i] = '\0';
   }
 
+  // write out the text
   for (uint8_t i = 0; i < textLen; i++)
   {
     char reverseIndex = i;
@@ -164,6 +144,7 @@ void HD44780::Slide(const char *text, uint8_t textLen){
     while((millis_get() - start) < minimumAdTime);
   }
 
+  // remove text
   for (uint8_t e = 0; e <= textLen; e++)
   {
     for (uint8_t i = 0; i < textLen; i++)
@@ -181,6 +162,46 @@ void HD44780::Slide(const char *text, uint8_t textLen){
     start = millis_get();
     while((millis_get() - start) < slideDelayMS);
   }
+}
+
+// Sending command to the LCD
+void HD44780::WriteCommand(unsigned char cmd) {
+  OutNibble(cmd >> 4);
+  OutNibble(cmd);
+  _delay_us(50);
+}
+
+// Writes Data to the LCD
+void HD44780::WriteData(unsigned char data) {
+  // Sets Register Select-pin to (1) to signal that the HD44780 is receiving data
+  LCD_RS_PORT |= LCD_RS;
+
+  // Writes the data
+  Write(data);
+
+  // Sets RS-pin to (0) for receiving commands
+  LCD_RS_PORT &= ~LCD_RS;
+}
+
+// Sends half-bytes
+void HD44780::Write(unsigned char byte) {
+  OutNibble(byte >> 4); // 
+  OutNibble(byte);
+}
+
+void HD44780::GoTo(unsigned char x, unsigned char y) {
+  unsigned char addr = 0x80 + x + (0x40 * y);
+  WriteCommand(addr);
+}
+
+void HD44780::Clear(void) {
+  WriteCommand(HD44780_CLEAR);
+  _delay_ms(2);
+}
+
+void HD44780::Home(void) {
+  WriteCommand(HD44780_HOME);
+  _delay_ms(2);
 }
 
 void HD44780::Initialize(void) {

@@ -16,15 +16,17 @@ Company AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
     {
         rnd = rand() % 1001;
 
-        for(int i = 0; i < companies->size; i++)
+        for(int i = 0; i < pgm_read_word(&companies->size); i++)
         {   
-            if(rnd < companies->companies[i].slotEnd)
+            if(rnd < pgm_read_word(&companies->companies[i].slotEnd))
             {
                 if(this->currentCompanyIndex == i) break;
 
                 this->currentCompanyIndex = i;
 
-                return Company(companies->companies[i]);
+                CompanyPROGMEM company;
+                memcpy_P(&company, &companies->companies[i], sizeof(CompanyPROGMEM));
+                return Company(company);
             }
         }
     }
