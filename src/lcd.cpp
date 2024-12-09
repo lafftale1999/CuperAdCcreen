@@ -98,7 +98,7 @@ void HD44780::BlinkText(const char *text)
   }
 }
 
-// Written by https://github.com/Zar000
+// Co-written with https://github.com/Zar000
 void HD44780::ScrollText(const char *text, uint8_t textLen){
   const uint8_t slideDelayMS = 100;
   const uint32_t minimumAdTime = 2000;
