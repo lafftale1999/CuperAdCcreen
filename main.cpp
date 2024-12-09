@@ -11,6 +11,7 @@ int main()
     // initializing millis library
     millis_init();
 
+    // allowing interrupts to be able to fetch time from clock
     sei();
 
     // creating and setting screen
@@ -18,8 +19,8 @@ int main()
     screen.Initialize();
     screen.Clear();
 
-    // loading companies into PROGMEM
-    const CompaniesPROGMEM companies PROGMEM = init_companies();
+    // creating pointer to companies in PROGMEM
+    const CompaniesPROGMEM* companiesPtr = init_companies();
 
     // creating adchooser
     AdChooser adChooser;
@@ -30,7 +31,7 @@ int main()
     // super-loop
     while(1)
     {   
-        Company currentCompany = adChooser.chooseNextCompany(&companies);
+        Company currentCompany = adChooser.chooseNextCompany(companiesPtr);
         screen.ShowAd(&currentCompany, adChooser.chooseNextMessage(&currentCompany));
     }
     

@@ -38,17 +38,8 @@
 #define HD44780_HOME 0x02
 // ... [rest of the command set]
 
-#define AD_LENGTH 10000
+#define AD_LENGTH 5000
 #define COMPANY_NAME_TIME 3000
-
-#define customA                                                                \
-  { 0x4, 0x0, 0xe, 0x1, 0xf, 0x11, 0xf, 0x0 }
-#define hourglass                                                              \
-  { 0x1f, 0x11, 0xa, 0x4, 0x4, 0xa, 0x11, 0x1f }
-#define leftSideHourglass                                                      \
-  { 0x00, 0x0C, 0x0A, 0x09, 0x0A, 0x0C, 0x00, 0x00 }
-#define rightSideHourglass                                                     \
-  { 0x00, 0x06, 0x0A, 0x12, 0x0A, 0x06, 0x00, 0x00 }
 
 // HD44780 LCD class
 class HD44780 {
@@ -61,7 +52,7 @@ public:
   void GoTo(unsigned char x, unsigned char y);
   void Clear(void);
   void Home(void);
-  void Slide(const char *text, uint8_t textLen);
+  void ScrollText(const char *text, uint8_t textLen);
   void Initialize(void);
   void CreateChar(uint8_t location, uint8_t charArray[]);
   void BlinkText(const char *text);

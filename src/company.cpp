@@ -2,66 +2,71 @@
 #include <string.h>
 #include <avr/pgmspace.h>
 
-CompaniesPROGMEM init_companies()
+const CompaniesPROGMEM companies PROGMEM = 
 {
-    CompaniesPROGMEM companies = 
     {
+        {"HEDERLIGE HARRYS BILAR AB", 
+        5000, 
+        344, 
+        "BUY YOUR CAR FROM HARRYS,scroll,A GOOD DEAL (FOR HARRY),plain,GIVE ME YOUR MONAY,blink,",
         {
-            {"HEDERLIGE HARRYS BILAR AB", 
-            5000, 
-            344, 
-            "BUY YOUR CAR FROM HARRYS,scroll,A GOOD DEAL (FOR HARRY),plain,GIVE ME YOUR MONAY,blink,",
-            {
-                0b01010, 0b11111, 0b10000, 0b11111,
-                0b00001, 0b11111, 0b01010, 0b00000
-            }
-            },
-
-            {"GRAMMY DUCK'S PIES AB",
-            3000,
-            551,
-            "BUY PIE FROM GRAMMY DUCK,scroll,MAKING PEOPLE FLOAT SINCE 1964,plain,",
-            {
-                0b00100, 0b10010, 0b01001, 0b10010,
-                0b00000, 0b11111, 0b10001, 0b01110
-            }
-            },
-
-            {"PETTER'S HANDYMAN AB",
-            1500,
-            655,
-            "LET BETTER DO THE BUILDING,scroll,NOW TAXFREE! CALL PETTER TODAY,plain,",
-            {
-                0b00000, 0b00001, 0b01111, 0b10101,
-                0b00100, 0b00100, 0b00100, 0b00100
-            }
-            },
-
-            {"GOOFY DETECTIVE AGENCY AB",
-            4000,
-            931,
-            "MYSTERIES? CALL GOOFY!,plain,GOOFY KIRR THE BIFF,plain,",
-            {
-                0b01110, 0b10001, 0b10001, 0b10001,
-                0b01110, 0b00100, 0b00010, 0b00001
-            }
-            },
-
-            {"CUPERADS",
-            1000,
-            1000,
-            "LOOKING TO BE SEEN? CALL US!,scroll,",
-            {
-                0b11101, 0b10000, 0b11101, 0b00000,
-                0b10111, 0b00101, 0b10111, 0b00101
-            }
-            }
+            0b01010, 0b11111, 0b10000, 0b11111,
+            0b00001, 0b11111, 0b01010, 0b00000
         },
-        COMPANIES_IN_LIST,
-        14500
-    };
+        REGULAR
+        },
 
-    return companies;
+        {"GRAMMY DUCK'S PIES AB",
+        3000,
+        551,
+        "BUY PIE FROM GRAMMY DUCK,scroll,MAKING PEOPLE FLOAT SINCE 1964,plain,",
+        {
+            0b00100, 0b10010, 0b01001, 0b10010,
+            0b00000, 0b01110, 0b10001, 0b11111
+        },
+        REGULAR
+        },
+
+        {"PETTER'S HANDYMAN AB",
+        1500,
+        655,
+        "LET BETTER DO THE BUILDING,scroll,NOW TAXFREE! CALL PETTER TODAY,plain,",
+        {
+            0b00000, 0b00001, 0b01111, 0b10101,
+            0b00100, 0b00100, 0b00100, 0b00100
+        },
+        SPECIAL
+        },
+
+        {"GOOFY DETECTIVE AGENCY AB",
+        4000,
+        931,
+        "MYSTERIES? CALL GOOFY!,plain,GOOFY KIRR THE BIFF,plain,",
+        {
+            0b01110, 0b10001, 0b10001, 0b10001,
+            0b01110, 0b00100, 0b00010, 0b00001
+        },
+        REGULAR
+        },
+
+        {"CUPERADS",
+        1000,
+        1000,
+        "LOOKING TO BE CEEN? CALL US!,scroll,",
+        {
+            0b11101, 0b10000, 0b11101, 0b00000,
+            0b10111, 0b00101, 0b10111, 0b00101
+        },
+        REGULAR
+        }
+    },
+    COMPANIES_IN_LIST,
+    14500
+};
+
+const CompaniesPROGMEM* init_companies()
+{
+    return &companies;
 }
 
 Company::Company()
@@ -82,6 +87,7 @@ Company::Company(CompanyPROGMEM company)
     setPayment(company.payment);
     createMessages(company.messages);
     this->logo = Character(company.bitMap);
+    setDemand(company.demand);
 }
 
 void Company::setName(char name[MAX_STRING_LENGTH])
@@ -93,6 +99,11 @@ void Company::setName(char name[MAX_STRING_LENGTH])
 void Company::setPayment(int payment)
 {
     this->payment = payment;
+}
+
+void Company::setDemand(Demand demand)
+{
+    this->demand = demand;
 }
 
 void Company::createMessages(char messages[])
@@ -159,4 +170,9 @@ Messages Company::getMessages()
 Character Company::getLogo()
 {
     return this->logo;
+}
+
+Demand Company::getDemand()
+{
+    return this->demand;
 }
