@@ -262,7 +262,7 @@ END GROUP
                 0x000004f4                AdChooser::setCurrentCompanyIndex(char)
                 0x00000502                AdChooser::getCurrentCompanyIndex()
  .text          0x0000050a      0x2d8 bin/debug/src/company.o
-                0x0000050a                init_companies()
+                0x0000050a                getCompaniesPtr()
                 0x00000510                Company::setName(char*)
                 0x00000518                Company::Company()
                 0x00000518                Company::Company()

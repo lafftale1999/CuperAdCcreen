@@ -8,10 +8,10 @@
 
 int main()
 {   
-    // initializing millis library
+    // initializing millis library and starting the clock
     millis_init();
 
-    // allowing interrupts to be able to fetch time from clock
+    // allowing interrupts to be able to fetch time from millis_get()
     sei();
 
     // creating and setting screen
@@ -20,15 +20,14 @@ int main()
     screen.Clear();
 
     // creating pointer to companies in PROGMEM
-    const CompaniesPROGMEM* companiesPtr = init_companies();
+    const CompaniesPROGMEM* companiesPtr = getCompaniesPtr();
 
     // creating adchooser
     AdChooser adChooser;
 
-    // seeding the rng
+    // seeding rand() - used for generating currentCompany and their next message
     setup_seed();
 
-    // super-loop
     while(1)
     {   
         Company currentCompany = adChooser.chooseNextCompany(companiesPtr);

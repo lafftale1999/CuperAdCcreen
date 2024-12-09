@@ -9,7 +9,14 @@ AdChooser::AdChooser()
 }
 
 Company AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
-{
+{   
+    /**Every company have a "slotEnd" that symbolise their adslot wich is based on their payment / total payment * 1000.
+     * As we are using PROGMEM - these have been hardcoded in to the PROGMEM in company.cpp
+     * This algorithm randomly generates a number between 0-1000. The program then checks if rnd is smaller 
+     * than the slotEnd, if not - check next company. After that it checks if the company is the currentcompany 
+     * that is showing to avoid showing the same company twice in a row.
+     */
+
     int rnd;
 
     while(1)
@@ -24,6 +31,7 @@ Company AdChooser::chooseNextCompany(const CompaniesPROGMEM *companies)
 
                 this->currentCompanyIndex = i;
 
+                // copies the value at companies->companies[i] and creates a company
                 CompanyPROGMEM company;
                 memcpy_P(&company, &companies->companies[i], sizeof(CompanyPROGMEM));
                 return Company(company);

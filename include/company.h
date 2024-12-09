@@ -28,7 +28,7 @@ typedef struct
     long totalPaid;
 }CompaniesPROGMEM;
 
-const CompaniesPROGMEM* init_companies();
+const CompaniesPROGMEM* getCompaniesPtr();
 
 class Company
 {

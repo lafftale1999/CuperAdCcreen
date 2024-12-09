@@ -4,6 +4,13 @@
 
 const CompaniesPROGMEM companies PROGMEM = 
 {
+    /**Loading our companies in to PROGMEM
+     * name
+     * payment
+     * message
+     * bitmap
+     * demand
+     */
     {
         {"HEDERLIGE HARRYS BILAR AB", 
         5000, 
@@ -64,7 +71,7 @@ const CompaniesPROGMEM companies PROGMEM =
     14500
 };
 
-const CompaniesPROGMEM* init_companies()
+const CompaniesPROGMEM* getCompaniesPtr()
 {
     return &companies;
 }
