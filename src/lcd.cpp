@@ -100,7 +100,7 @@ void HD44780::BlinkText(const char *text)
 
 // Co-written with https://github.com/Zar000
 void HD44780::ScrollText(const char *text, uint8_t textLen){
-  const uint8_t slideDelayMS = 100;
+  const uint8_t slideDelayMS = 50;
   const uint32_t minimumAdTime = 2000;
   const uint8_t screenSize = 32;
   char currText[screenSize + 1];
@@ -157,9 +157,12 @@ void HD44780::ScrollText(const char *text, uint8_t textLen){
       }
 
       currText[i] = currText[i+1];
-      Clear();
-      WriteText(currText);
     }
+
+    
+    Clear();
+    WriteText(currText);
+
     start = millis_get();
     while((millis_get() - start) < slideDelayMS);
   }
@@ -176,12 +179,15 @@ void HD44780::WriteCommand(unsigned char cmd) {
 void HD44780::WriteData(unsigned char data) {
   // Sets Register Select-pin to (1) to signal that the HD44780 is receiving data
   LCD_RS_PORT |= LCD_RS;
+  _delay_ms(5);
 
   // Writes the data
   Write(data);
-
+  _delay_ms(5);
+  
   // Sets RS-pin to (0) for receiving commands
   LCD_RS_PORT &= ~LCD_RS;
+  _delay_ms(5);
 }
 
 // Sends half-bytes
@@ -214,22 +220,34 @@ void HD44780::Initialize(void) {
   LCD_DB6_DIR |= LCD_DB6;
   LCD_DB7_DIR |= LCD_DB7;
 
+  LCD_RS_PORT = LCD_RS_PORT
+    &~(1 << LCD_E)
+    &~(1 << LCD_RS);
+
   // Initialization sequence
-  _delay_ms(15);
-  OutNibble(0x03);
-  _delay_ms(5);
-  OutNibble(0x03);
+  _delay_ms(100);      // Wait for LCD to power up
+  OutNibble(0x03);    // Function set (8-bit mode)
+  _delay_ms(5);       // Wait for command to be processed
+  OutNibble(0x03);    // Function set (8-bit mode, second attempt)
+  _delay_us(100);     // Short wait
+  OutNibble(0x03);    // Function set (8-bit mode, third attempt)
+  _delay_us(100);     // Short wait
+  OutNibble(0x02);    // Set to 4-bit mode
+  _delay_us(100);     // Short wait
+
+  WriteCommand(0x28); // Function set: 4-bit mode, 2 lines, 5x8 dots
   _delay_us(100);
-  OutNibble(0x03);
-  OutNibble(0x02);
 
-  WriteCommand(0x28); // Function set: 4-bit mode, 2 lines
   WriteCommand(0x0C); // Display ON, Cursor OFF, Blink OFF
-  Clear();
-  WriteCommand(0x06); // Entry mode: Increment cursor
+  _delay_us(100);
 
-  _delay_us(25); //safety delay
+  Clear();            // Clear display
+  _delay_ms(2);
+
+  WriteCommand(0x06); // Entry mode: Increment cursor, no shift
+  _delay_us(100);
 }
+
 
 void HD44780::OutNibble(unsigned char nibble) {
   // BIT 0
