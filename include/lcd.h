@@ -11,11 +11,11 @@
 // Pin configuration
 #define LCD_RS_DIR DDRD
 #define LCD_RS_PORT PORTD
-#define LCD_RS (1 << PD0)
+#define LCD_RS (1 << PD2)
 
 #define LCD_E_DIR DDRD
 #define LCD_E_PORT PORTD
-#define LCD_E (1 << PD1)
+#define LCD_E (1 << PD3)
 
 #define LCD_DB4_DIR DDRD
 #define LCD_DB4_PORT PORTD
@@ -32,6 +32,8 @@
 #define LCD_DB7_DIR DDRD
 #define LCD_DB7_PORT PORTD
 #define LCD_DB7 (1 << PD7)
+
+
 
 // HD44780 commands
 #define HD44780_CLEAR 0x01
