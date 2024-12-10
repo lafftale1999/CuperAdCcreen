@@ -5,10 +5,12 @@ OBJDUMP="C:\avr\bin\avr-objdump"
 AVRSIZE="C:\avr\bin\avr-size"
 OBJISP="C:\avr\bin\avrdude"
 MCU=atmega328p
+PROGRAMMER=arduino
+BAUDRATE=115200
 CFLAGS=-Wall -Wextra  -Wundef -pedantic \
 		-Os  -DF_CPU=16000000UL -mmcu=${MCU} -DBAUD=19200
 LDFLAGS=-mmcu=$(MCU)
-PORT=\\\\.\\COM3
+PORT=\\\\.\\COM4
 BIN=CuperAdCcreen
 OUT=${BIN}.hex
 SOURCES = main.cpp src/adChooser.cpp src/company.cpp src/lcd.cpp src/message.cpp src/messages.cpp src/utils.cpp src/character.cpp src/millis.cpp
@@ -44,8 +46,7 @@ $(OBJS):$(SOURCES)
 	$(OBJCOPY) -O ihex -R .fuse -R .lock -R .user_signatures -R .comment $< $@
 
 isp: ${BIN}.hex
-	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$<
-
+	$(OBJISP) -F -V -c $(PROGRAMMER) -p ${MCU} -P ${PORT} -b $(BAUDRATE) -U flash:w:$<
 
 clean:
 	del "$(OUT)"  *.map *.P *.d

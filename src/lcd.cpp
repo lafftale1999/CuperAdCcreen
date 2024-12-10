@@ -169,7 +169,7 @@ void HD44780::ScrollText(const char *text, uint8_t textLen){
 void HD44780::WriteCommand(unsigned char cmd) {
   OutNibble(cmd >> 4);
   OutNibble(cmd);
-  _delay_us(50);
+  _delay_us(100);
 }
 
 // Writes Data to the LCD
